@@ -25,7 +25,7 @@ class ClimatixSensor(ClimatixEntity, SensorEntity):
     """A numeric measurement or a status-text datapoint."""
 
     def __init__(self, coordinator, entry, desc) -> None:
-        super().__init__(coordinator, entry, desc)
+        super().__init__(coordinator, entry, desc, "sensor")
         self._numeric = desc.get("numeric", False)
         if self._numeric:
             self._attr_state_class = SensorStateClass.MEASUREMENT

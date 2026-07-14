@@ -24,6 +24,9 @@ async def async_setup_entry(
 class ClimatixBinarySensor(ClimatixEntity, BinarySensorEntity):
     """An On/Off datapoint (pump state, etc.)."""
 
+    def __init__(self, coordinator, entry, desc) -> None:
+        super().__init__(coordinator, entry, desc, "binary_sensor")
+
     @property
     def is_on(self):
         v = self._value

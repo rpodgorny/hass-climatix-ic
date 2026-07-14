@@ -25,6 +25,10 @@ EXTLOGIN = f"{WWW}/Account/ExternalLogin?provider=climatixid&locale=en-US&userna
 DEFAULT_REMOTE = "4d2424c8-6e1d-4680-9ba2-b9a53329faa4"
 
 
+def slugify(s: str) -> str:
+    return re.sub(r"[^a-z0-9]+", "_", s.lower()).strip("_")
+
+
 class ClimatixError(Exception):
     """Base error."""
 
@@ -216,7 +220,7 @@ class ClimatixClient:
     def discover(self) -> list[dict]:
         """Enumerate the plant's overview datapoints as HA entity descriptors.
 
-        [{'pid', 'name', 'component', 'unit'?, 'temperature'?, 'numeric'?}]
+        [{'pid', 'name', 'slug', 'component', 'unit'?, 'temperature'?, 'numeric'?}]
         """
         self._ensure()
         data = self._ajax("getDiagramPage", plantItemId=self._entry_page_id())
@@ -237,6 +241,7 @@ class ClimatixClient:
             # captions are not unique across the plant; disambiguate the display name with the id
             desc["pid"] = pid
             desc["name"] = f"{caption} ({pid})" if captions.count(caption) > 1 else caption
+            desc["slug"] = slugify(caption)  # entity_id uses this + pid, never the plant name
             out.append(desc)
         return out
 
