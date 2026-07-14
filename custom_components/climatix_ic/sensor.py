@@ -27,11 +27,15 @@ class ClimatixSensor(ClimatixEntity, SensorEntity):
     def __init__(self, coordinator, entry, desc) -> None:
         super().__init__(coordinator, entry, desc, "sensor")
         self._numeric = desc.get("numeric", False)
-        if self._numeric:
+        if not self._numeric:
+            self._attr_icon = "mdi:information-outline"  # status / mode text
+        else:
             self._attr_state_class = SensorStateClass.MEASUREMENT
             self._attr_native_unit_of_measurement = desc.get("unit")
             if desc.get("temperature"):
-                self._attr_device_class = SensorDeviceClass.TEMPERATURE
+                self._attr_device_class = SensorDeviceClass.TEMPERATURE  # thermometer icon
+            elif desc.get("unit") == "%":
+                self._attr_icon = "mdi:percent"
 
     @property
     def native_value(self):

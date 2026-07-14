@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from homeassistant.components.binary_sensor import BinarySensorEntity
+from homeassistant.components.binary_sensor import BinarySensorDeviceClass, BinarySensorEntity
 from homeassistant.core import HomeAssistant
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
 
@@ -23,6 +23,8 @@ async def async_setup_entry(
 
 class ClimatixBinarySensor(ClimatixEntity, BinarySensorEntity):
     """An On/Off datapoint (pump state, etc.)."""
+
+    _attr_device_class = BinarySensorDeviceClass.RUNNING  # pumps: running/not running icon
 
     def __init__(self, coordinator, entry, desc) -> None:
         super().__init__(coordinator, entry, desc, "binary_sensor")
