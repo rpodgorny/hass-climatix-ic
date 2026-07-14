@@ -67,7 +67,16 @@ Don't paste it into untrusted websites — it's the full second factor.
 
 ## Notes & limitations
 
-- **Read-only.** Sensors and binary sensors only; it does not write setpoints (yet).
+- **Read-only for now.** Sensors and binary sensors only — it does not write setpoints
+  or modes. This is **not a technical dead end**: many datapoints are writable in
+  Climatix, and a write path (`number` / `select` / `switch` entities) is a natural next
+  step. It simply hasn't been built yet because the account used to develop this
+  integration is a `LimitedUser` whose plant privileges are only
+  `AppsDashboardManage`, `PlantAlarm`, `WebAccess` — **no datapoint-write privilege at
+  all**, so there was no way to test writing without shipping blind, untested code.
+  If you have an account with operate/command privilege on the plant (or an APIM
+  subscription key for the documented `PUT /DataPoints` API), open an issue — write
+  support can be added and validated properly.
 - **Cloud polling.** Each poll re-reads every datapoint over the Climatix cloud; keep
   the interval reasonable. The session is reused and only re-established when it expires.
 - Datapoint captions from Climatix are not unique (e.g. two boilers both report
