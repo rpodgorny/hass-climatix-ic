@@ -14,7 +14,9 @@ from .coordinator import ClimatixCoordinator
 class ClimatixEntity(CoordinatorEntity[ClimatixCoordinator]):
     """Common wiring: one HA entity per Climatix datapoint."""
 
-    _attr_has_entity_name = True
+    # False: friendly name is the caption alone, not "<plant> <caption>" - a single hub is
+    # the common case, so the plant prefix is just noise. entity_id stays namespaced (below).
+    _attr_has_entity_name = False
 
     def __init__(
         self, coordinator: ClimatixCoordinator, entry: ConfigEntry, desc: dict, platform: str
