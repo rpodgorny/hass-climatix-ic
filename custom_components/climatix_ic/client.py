@@ -37,13 +37,26 @@ class SessionExpired(ClimatixError):
     """The RemoteWeb/app session went stale; re-login and retry."""
 
 
+_last_totp_counter: int | None = None
+
+
 def totp(secret: str) -> str:
-    """Current 6-digit TOTP for a base32 secret."""
-    # wait out the tail of a window so the code can't expire mid-login
-    if time.time() % 30 > 27:
-        time.sleep(4)
+    """Current 6-digit TOTP for a base32 secret.
+
+    Never returns a code from a window already used in this process: the server rejects
+    a re-used code as a replay, and two logins can happen seconds apart (config flow
+    validates, then the coordinator's first refresh logs in again). So wait for the next
+    window if this one was already consumed, and avoid the tail where it could expire
+    mid-login.
+    """
+    global _last_totp_counter
+    counter = int(time.time() // 30)
+    if counter == _last_totp_counter or time.time() % 30 > 27:
+        time.sleep(30 - time.time() % 30 + 0.5)  # into the next window
+        counter = int(time.time() // 30)
+    _last_totp_counter = counter
     key = base64.b32decode(secret)
-    h = hmac.new(key, struct.pack(">Q", int(time.time() // 30)), hashlib.sha1).digest()
+    h = hmac.new(key, struct.pack(">Q", counter), hashlib.sha1).digest()
     o = h[-1] & 15
     return str((struct.unpack(">I", h[o : o + 4])[0] & 0x7FFFFFFF) % 10**6).zfill(6)
 
