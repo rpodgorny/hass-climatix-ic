@@ -1,0 +1,49 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "Climatix IC",
+        "description": "Sign in with your Climatix IC account. The TOTP secret is the base32 key behind your authenticator's QR code (not the 6-digit code).",
+        "data": {
+          "username": "Email",
+          "password": "Password",
+          "totp_secret": "TOTP secret (base32)"
+        }
+      },
+      "plant": {
+        "title": "Select plant",
+        "data": {
+          "plant_id": "Plant"
+        }
+      },
+      "reauth_confirm": {
+        "title": "Climatix IC",
+        "description": "Re-enter your Climatix IC credentials.",
+        "data": {
+          "username": "Email",
+          "password": "Password",
+          "totp_secret": "TOTP secret (base32)"
+        }
+      }
+    },
+    "error": {
+      "invalid_auth": "Invalid email, password or TOTP secret.",
+      "cannot_connect": "Could not reach Climatix IC.",
+      "no_plants": "This account has no plants assigned."
+    },
+    "abort": {
+      "already_configured": "This plant is already configured.",
+      "reauth_successful": "Re-authentication was successful."
+    }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "title": "Climatix IC options",
+        "data": {
+          "scan_interval": "Poll interval (seconds)"
+        }
+      }
+    }
+  }
+}

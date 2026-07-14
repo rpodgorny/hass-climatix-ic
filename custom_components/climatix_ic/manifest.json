@@ -1,0 +1,12 @@
+{
+  "domain": "climatix_ic",
+  "name": "Climatix IC",
+  "codeowners": ["@rpodgorny"],
+  "config_flow": true,
+  "documentation": "https://github.com/rpodgorny/hass-climatix-ic",
+  "integration_type": "hub",
+  "iot_class": "cloud_polling",
+  "issue_tracker": "https://github.com/rpodgorny/hass-climatix-ic/issues",
+  "requirements": [],
+  "version": "0.1.0"
+}
