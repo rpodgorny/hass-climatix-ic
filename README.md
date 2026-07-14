@@ -77,3 +77,8 @@ Don't paste it into untrusted websites — it's the full second factor.
 
 Unofficial, not affiliated with Siemens. Uses the same private cloud endpoints as the
 Climatix IC web app, which may change without notice.
+
+## License
+
+[GNU GPL v3](LICENSE) — you may use, modify and redistribute it, but distributed
+modifications must also be released under the GPL.
